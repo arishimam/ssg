@@ -1,7 +1,8 @@
 from textnode import *
+from htmlnode import HTMLNode
 
 def main():
-    dummy = TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
+    dummy = HTMLNode("p", "Random info in tag", [], {"href":"www.google.com"})
     print(dummy.__repr__())
 
 if __name__ == "__main__":
