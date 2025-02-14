@@ -1,5 +1,5 @@
 from enum import Enum
-from leafnode import LeafNode
+from htmlnode import LeafNode
 
 class TextType(Enum):
     NORMAL = "normal"
@@ -30,16 +30,18 @@ def text_node_to_html_node(text_node):
     t = text_node.text_type
 
     if t == TextType.NORMAL:
-        return LeafNode(None, self.text)
-    elif t == TextType.BOLD:
-        return LeafNode("b", self.text)
-    elif t == TextType.ITALIC:
-        return LeafNode("i", self.text)
-    elif t == TextType.CODE:
-        return LeafNode("code", self.text)
-    elif t == TextType.LINK:
-        return LeafNode("a", self.text, {"href":self.url})
-    elif t == TextType.IMAGE: 
-        return LeafNode("img", None, {"src":self.url,"alt":self.text} )
-    else:
-        raise ValueError(f"Invalid text type {t}")
+        return LeafNode(None, text_node.text)
+    if t == TextType.TEXT:
+        return LeafNode(None, text_node.text)
+    if t == TextType.BOLD:
+        return LeafNode("b", text_node.text)
+    if t == TextType.ITALIC:
+        return LeafNode("i", text_node.text)
+    if t == TextType.CODE:
+        return LeafNode("code", text_node.text)
+    if t == TextType.LINK:
+        return LeafNode("a", text_node.text, {"href":text_node.url})
+    if t == TextType.IMAGE: 
+      return LeafNode("img", None, {"src":text_node.url,"alt":text_node.text} )
+
+    raise ValueError(f"Invalid text type {t}")
