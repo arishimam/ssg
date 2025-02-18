@@ -1,0 +1,99 @@
+from textnode import TextNode
+from htmlnode import *
+
+
+def markdown_to_blocks(markdown):
+    blocks = markdown.split('\n\n')
+    filtered_blocks = []
+
+    for b in blocks:
+        block = b.strip()
+
+        if block == "":
+            continue
+
+        filtered_blocks.append(block)
+
+
+    return filtered_blocks 
+
+
+def block_to_block_type(block):
+    lines = block.split("\n")
+
+    if block.startswith( ('# ', '## ', '### ', '#### ', '##### ', '###### ') ):
+        return 'heading'
+
+    if block.startswith('```') and block.endswith('```'):
+        return 'code'
+
+    if block.startswith('>'):
+        for line in lines:
+            if not line.startswith('>'):
+                return 'paragraph'
+        return 'quote'
+
+    if block.startswith('* '):
+        for line in lines:
+            if not line.startswith('* '):
+                return 'paragraph'
+        return 'unordered_list'
+
+    if block.startswith('- '):
+        for line in lines:
+            if not line.startswith('- '):
+                return 'paragraph'
+        return 'unordered_list'
+
+    if block.startswith('1. '):
+        i = 1
+        for line in lines:
+            if not line.startswith(f"{i}. "):
+                return 'paragraph'
+            i+=1
+        return 'ordered_list'
+
+    return "paragraph" 
+
+def markdown_to_html_node(markdown):
+    print(f"markdown = {markdown}")
+    blocks = markdown_to_blocks(markdown)
+    print("blocks = ", blocks)
+    print("blocks[0] = ", blocks[0])
+    print(blocks[0][-1])
+
+    print(block_to_block_type(blocks[0]))
+    nodes = []
+
+    for b in blocks:
+
+        if block_to_block_type(b) == "heading":
+            i = 0
+            while b[i] == '#':
+                i+=1
+            pass
+
+        if block_to_block_type(b) == "paragraph":
+            # create TextNode
+            pass
+
+        if block_to_block_type(b) == "code":
+            b.strip('```') 
+            textnode = TextNode(b, TextType.CODE)
+            code_node = text_node_to_html_node(text_node)
+            pre_node = ParentNode("pre", None, [code_node], None)
+            return pre_node.__to_html__()
+
+        if block_to_block_type(b) == "quote":
+            pass
+
+        if block_to_block_type(b) == "unordered_list":
+            pass
+
+        if block_to_block_type(b) == "ordered_list":
+            pass
+
+code_block = "```\ndef print('Hello world')\n ```"
+print(code_block.endswith('```'))
+print(markdown_to_html_node(code_block))
+    

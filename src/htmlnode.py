@@ -56,7 +56,6 @@ class ParentNode(HTMLNode):
         if self.children == None:
             raise ValueError("Children missing!")
 
-
         html_string = f"<{self.tag}{self.__props_to_html__()}>"
         for c in self.children:
             html_string += c.__to_html__()
