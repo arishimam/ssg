@@ -1,5 +1,6 @@
 import unittest
-from split_blocks import *
+from markdown_blocks import *
+from htmlnode import ParentNode, LeafNode
 
 class TestSplitBlocks(unittest.TestCase):
     def test_split_markdown_to_blocks(self):
@@ -98,26 +99,43 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
 
 class TestMarkdownToHTML(unittest.TestCase):
     def test_markdown_to_html_node(self):
-        md = """
+        md1 = """
 
-###### Some random info yo
+###### Some random info
+
 
 1. This is an ordered list block
 2. Es
-3. Last
+
+"""
+        node = markdown_to_html_node(md1)
+        html = node.__to_html__()
+        self.assertEqual(html,
+            "<div><h6>Some random info</h6><ol><li>This is an ordered list block</li><li>Es</li></ol></div>"
+        )
 
 
+        md2 = """ 
 * This is an unordered list block
 * Second
-* 3rd item!
 
+Some random info 
+"""
+        node = markdown_to_html_node(md2)
+        html = node.__to_html__()
+        self.assertEqual(html,
+            "<div><ul><li>This is an unordered list block</li><li>Second</li></ul><p>Some random info</p></div>"
+        )
+
+        md3 = """
 >This is a quote block
 >More    
->last bit. 
 
 ```def print('Hello world') ```
 
-Some random info yo
-
-
 """
+        node = markdown_to_html_node(md3)
+        html = node.__to_html__()
+        self.assertEqual(html,
+            "<div><blockquote>This is a quote block More</blockquote><pre><code>def print('Hello world') </code></pre></div>"
+        )

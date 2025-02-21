@@ -1,6 +1,6 @@
 import unittest
 from textnode import *
-from inline_extract_markdown import *
+from inline_markdown import *
 
 class TestSplitNodes(unittest.TestCase):
     def test_delimiter_code(self):
@@ -111,10 +111,10 @@ class TestExtractMarkdown(unittest.TestCase):
             ]
         )
 
-    def test_text_to_textnodes(self):
+    def test_text_to_text_nodes(self):
         text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         self.assertListEqual(
-            text_to_textnodes(text),
+            text_to_text_nodes(text),
             [
                 TextNode("This is ", TextType.TEXT),
                 TextNode("text", TextType.BOLD),
