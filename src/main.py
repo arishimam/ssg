@@ -1,4 +1,4 @@
-from filecopy import *
+from static_to_public import file_copy 
 import os   
 
 def main():

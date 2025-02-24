@@ -43,8 +43,8 @@ def file_copy(source_dir, target_dir):
 
 # How to do this recursively ? What happens when I first access the src dir and how do I access?ggi
 if __name__ == "__main__":
-    source = "/Users/arish/workspace/github/arishimam/ssg/static"
-    target = "/Users/arish/workspace/github/arishimam/ssg/public"
+    source = "./ssg/static"
+    target = "./ssg/public"
 
     file_copy(source, target)
 
