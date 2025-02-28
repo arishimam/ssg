@@ -138,8 +138,8 @@ def quote_to_html(b):
         
         lines[i] = lines[i].lstrip('> ')
         lines[i] = lines[i].strip() 
-        if lines[i] == "":
-            continue
+        #   if lines[i] == "":
+            #continue
         new_lines.append(lines[i])
 
     quote_block = " ".join(new_lines)

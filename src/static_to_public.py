@@ -36,7 +36,7 @@ def generate_page(from_path, template_path, dest_path):
 
 
     if not os.path.exists(dest_path):
-        os.mkdir(desk_path)
+        os.mkdir(dest_path)
     # Create new file by using write mode
     file = open(dest_path + "/index.html", 'w')
     file.write(content)
@@ -55,6 +55,23 @@ def open_store_file(file_path):
         print(f"An error occured {Exception}")
         return None
             
+
+def generate_pages_recursive(source_dir, template_path, target_dir):
+
+    if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
+
+    contents = os.listdir(source_dir)
+
+    for c in contents:
+        source_path = os.path.join(source_dir, c)
+        # if c is a file, call generate page
+        # else make recursive call
+        if os.path.isfile(source_path):
+            generate_page(source_path, template_path, target_dir)
+        else:
+            target_path = os.path.join(target_dir, c)
+            generate_pages_recursive(source_path, template_path, target_path)
 
 #generate_page('./content/index.md','./template.html', './public')
 
