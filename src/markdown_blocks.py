@@ -133,12 +133,16 @@ def code_to_html(b):
 def quote_to_html(b):
 
     lines = b.split('\n') 
-    
+    new_lines = [] 
     for i in range(len(lines)):
-        lines[i] = lines[i].lstrip('>')
+        
+        lines[i] = lines[i].lstrip('> ')
         lines[i] = lines[i].strip() 
+        if lines[i] == "":
+            continue
+        new_lines.append(lines[i])
 
-    quote_block = " ".join(lines)
+    quote_block = " ".join(new_lines)
     children = text_to_children(quote_block)
     return ParentNode("blockquote", children, None)
 

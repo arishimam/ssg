@@ -41,8 +41,8 @@ class TestSplitNodes(unittest.TestCase):
         )
 
     def test_delimiter_italic(self):
-        node = TextNode("This is text with a *italic block* word", TextType.TEXT)
-        new_nodes = split_nodes_delimiter([node], "*", TextType.ITALIC)
+        node = TextNode("This is text with a _italic block_ word", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC)
         self.assertEqual(
             new_nodes,
             [
@@ -52,9 +52,9 @@ class TestSplitNodes(unittest.TestCase):
             ]
         )
     def test_delimiter_bold_italic(self):
-        node = TextNode("This is text with **bold block** and *italic block* words", TextType.TEXT)
+        node = TextNode("This is text with **bold block** and _italic block_ words", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
-        new_nodes = split_nodes_delimiter(new_nodes, "*", TextType.ITALIC)
+        new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
         self.assertEqual(
             new_nodes,
             [
@@ -71,6 +71,10 @@ class TestExtractMarkdown(unittest.TestCase):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
         self.assertEqual(
             extract_markdown_images(text), [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+        )
+        text = "![JRR Tolkien sitting](/images/tolkien.png)"
+        self.assertEqual(
+            extract_markdown_images(text), [("JRR Tolkien sitting", "/images/tolkien.png")]
         )
 
 

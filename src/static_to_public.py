@@ -1,51 +1,66 @@
 import os
 import shutil
+from markdown_blocks import markdown_to_html_node
+from extract import extract_title 
+from htmlnode import * 
 
-# Write a recursive function that copies all the contents from a source directory to a destination directory (in our case, static to public)
-# It should first delete all the contents of the destination directory to ensure that the copy is clean.
-# It should copy all files and subdirectories, nested files, etc.
-# I recommend logging the path of each file you copy, so you can see what's happening as you run and debug your code.
 
 def file_copy(source_dir, target_dir):
-    # delete contents of destination directory. /public
-    # recreate empty public dir
-    if os.path.exists(target_dir):
-        shutil.rmtree(target_dir)
-
-    os.mkdir(target_dir)
-
-
-    # Copy all files and subdirectories from static
-    # List out everything in static
-    # Iterate through
-    # If something is a file, copy it to target
+    if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
 
     contents = os.listdir(source_dir)
     for c in contents:
-        s_path = source_dir + '/' + c
-        t_path = target_dir + '/' + c
+        s_path = os.path.join(source_dir, c)
+        t_path = os.path.join(target_dir, c)
+        print(f" * {s_path} -> {t_path}")
         
         if os.path.isfile(s_path):
             shutil.copy(s_path, t_path)
         else:
-            # recursive call?
             file_copy(s_path, t_path)
 
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+
+    markdown_file = open_store_file(from_path)
+    template_file = open_store_file(template_path)
     
-    # if its a directory, check if the directory exists at target, if not then create it
-    # then recursively call file copy ???
-    
+    html_node = markdown_to_html_node(markdown_file)
+    html = html_node.__to_html__()
 
-    # use os.listdir to list out static and then iterate through results and make recursive call from there
-    # use os.isfile or os.isdir as we iterate through 
+    title = extract_title(markdown_file)
 
-    # Log path of each copied file
+    title_inserted = template_file.replace('{{ Title }}', title)
+    content = title_inserted.replace('{{ Content }}', html)
 
-# How to do this recursively ? What happens when I first access the src dir and how do I access?ggi
+
+    if not os.path.exists(dest_path):
+        os.mkdir(desk_path)
+    # Create new file by using write mode
+    file = open(dest_path + "/index.html", 'w')
+    file.write(content)
+    file.close()
+
+
+def open_store_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            return content
+    except FileNotFoundError:
+        print("File not found at file path!")
+        return None
+    except Exception:
+        print(f"An error occured {Exception}")
+        return None
+            
+
+#generate_page('./content/index.md','./template.html', './public')
+
 if __name__ == "__main__":
-    source = "./ssg/static"
-    target = "./ssg/public"
-
+    source = "./static"
+    target = "./public"
     file_copy(source, target)
 
 

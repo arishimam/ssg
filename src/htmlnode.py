@@ -20,10 +20,10 @@ class HTMLNode():
         if self.props == None:
             return ""
 
-        prop_string = ""
+        prop_html = ""
         for k,v in self.props.items():
-            prop_string += f" {k}=\"{v}\"" 
-        return prop_string
+            prop_html += f" {k}=\"{v}\"" 
+        return prop_html
     
     def __repr__(self):
         return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
@@ -51,10 +51,10 @@ class ParentNode(HTMLNode):
 
     def __to_html__(self):
         if self.tag == None:
-            raise ValueError("Tag is missing!")
+            raise ValueError("Invalid html. Tag is missing!")
 
         if self.children == None:
-            raise ValueError("Children missing!")
+            raise ValueError("Invalid html. Children missing!")
 
         html_string = f"<{self.tag}{self.__props_to_html__()}>"
         for c in self.children:
