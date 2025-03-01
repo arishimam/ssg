@@ -20,7 +20,7 @@ def file_copy(source_dir, target_dir):
         else:
             file_copy(s_path, t_path)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(basepath, from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     markdown_file = open_store_file(from_path)
@@ -33,6 +33,9 @@ def generate_page(from_path, template_path, dest_path):
 
     title_inserted = template_file.replace('{{ Title }}', title)
     content = title_inserted.replace('{{ Content }}', html)
+
+    content = content.replace('href="/', f'href="{basepath}')
+    content = content.replace('src="/', f'src="{basepath}')
 
 
     if not os.path.exists(dest_path):
@@ -56,7 +59,7 @@ def open_store_file(file_path):
         return None
             
 
-def generate_pages_recursive(source_dir, template_path, target_dir):
+def generate_pages_recursive(basepath, source_dir, template_path, target_dir):
 
     if not os.path.exists(target_dir):
         os.mkdir(target_dir)
@@ -68,10 +71,10 @@ def generate_pages_recursive(source_dir, template_path, target_dir):
         # if c is a file, call generate page
         # else make recursive call
         if os.path.isfile(source_path):
-            generate_page(source_path, template_path, target_dir)
+            generate_page(basepath, source_path, template_path, target_dir)
         else:
             target_path = os.path.join(target_dir, c)
-            generate_pages_recursive(source_path, template_path, target_path)
+            generate_pages_recursive(basepath, source_path, template_path, target_path)
 
 #generate_page('./content/index.md','./template.html', './public')
 
